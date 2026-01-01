@@ -1,0 +1,56 @@
+{
+  "name": "Time Capsule",
+  "short_name": "Time Capsule",
+  "description": "Watch time slip away, moment by moment",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "设置为锁屏桌面",
+      "short_name": "锁屏桌面",
+      "description": "将时间胶囊设置为锁屏桌面",
+      "url": "/?action=set-lockscreen",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "取消锁屏桌面",
+      "short_name": "取消",
+      "description": "取消锁屏桌面设置",
+      "url": "/?action=remove-lockscreen",
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}
+
