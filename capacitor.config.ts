@@ -5,11 +5,29 @@ const config: CapacitorConfig = {
   appName: 'Time Capsule',
   webDir: 'dist',
   server: {
-    androidScheme: 'https'
+    android: {
+      allowMixedContent: true,
+    },
+    ios: {
+      contentInset: 'automatic',
+    },
   },
   ios: {
-    contentInset: 'automatic'
-  }
+    scheme: 'Time Capsule',
+    contentInset: 'automatic',
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      backgroundColor: '#667eea',
+      androidSplashResourceName: 'splash',
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: false,
+      iosSpinnerStyle: 'small',
+      spinnerColor: '#ffffff',
+    },
+  },
 };
 
 export default config;

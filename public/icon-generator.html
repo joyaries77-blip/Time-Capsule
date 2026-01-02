@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator - Time Capsule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+        .download-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .download-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        .info {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Time Capsule Icon Generator</h1>
+        <canvas id="icon192" width="192" height="192"></canvas>
+        <a id="download192" class="download-btn" download="icon-192.png">下载 192x192 图标</a>
+        
+        <canvas id="icon512" width="512" height="512"></canvas>
+        <a id="download512" class="download-btn" download="icon-512.png">下载 512x512 图标</a>
+        
+        <div class="info">
+            <p>将下载的图标文件放在 public 文件夹中</p>
+        </div>
+    </div>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const center = size / 2;
+            
+            // 背景渐变 - 紫色到粉红色（左侧紫色，右侧粉红色）
+            const bgGradient = ctx.createLinearGradient(0, 0, size, 0);
+            bgGradient.addColorStop(0, '#8B5CF6'); // 紫色
+            bgGradient.addColorStop(1, '#EC4899'); // 粉红色
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // 绘制时钟图标 - 半透明白色
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            
+            // 外环（较粗）
+            ctx.lineWidth = size * 0.04;
+            ctx.beginPath();
+            ctx.arc(center, center, size * 0.38, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // 内环（较细）
+            ctx.lineWidth = size * 0.02;
+            ctx.beginPath();
+            ctx.arc(center, center, size * 0.28, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // 时针 - 指向1-2之间（约1:30位置）
+            // 时针角度：1.5小时 = 45度，从12点开始顺时针
+            const hourAngle = (1.5 * 30 - 90) * Math.PI / 180; // 1:30 = 45度，减去90度因为12点在顶部
+            ctx.lineWidth = size * 0.035;
+            ctx.lineCap = 'round';
+            ctx.beginPath();
+            ctx.moveTo(center, center);
+            ctx.lineTo(
+                center + Math.cos(hourAngle) * (size * 0.18),
+                center + Math.sin(hourAngle) * (size * 0.18)
+            );
+            ctx.stroke();
+            
+            // 分针 - 指向9点位置
+            // 9点 = 270度，从12点开始顺时针，减去90度因为12点在顶部
+            const minuteAngle = (9 * 30 - 90) * Math.PI / 180; // 9点 = 270度 - 90 = 180度
+            ctx.lineWidth = size * 0.025;
+            ctx.beginPath();
+            ctx.moveTo(center, center);
+            ctx.lineTo(
+                center + Math.cos(minuteAngle) * (size * 0.25),
+                center + Math.sin(minuteAngle) * (size * 0.25)
+            );
+            ctx.stroke();
+            
+            // 中心点
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.beginPath();
+            ctx.arc(center, center, size * 0.025, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // 生成192x192图标
+        const canvas192 = document.getElementById('icon192');
+        drawIcon(canvas192, 192);
+        document.getElementById('download192').href = canvas192.toDataURL('image/png');
+        
+        // 生成512x512图标
+        const canvas512 = document.getElementById('icon512');
+        drawIcon(canvas512, 512);
+        document.getElementById('download512').href = canvas512.toDataURL('image/png');
+    </script>
+</body>
+</html>
+

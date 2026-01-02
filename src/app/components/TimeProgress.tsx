@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Clock, Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 import { CountdownClock } from './CountdownClock';
+import { ClickableText } from './ClickableText';
 
 interface TimeProgressProps {
   label: string;
@@ -41,31 +42,38 @@ export function TimeProgress({ label, icon, percentage, timeRemaining, gradient,
         }}
       />
       
-      <div className="flex items-center gap-3 mb-6 relative z-10">
-        <motion.div 
-          className="p-3 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl"
-          whileHover={{ rotate: 360, scale: 1.1 }}
-          transition={{ duration: 0.6, type: "spring" }}
-        >
-          {icon}
-        </motion.div>
-        <div>
-          <motion.h2 
-            className="text-gray-900"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: delay + 0.2 }}
+      <div className="mb-6 relative z-10 w-full">
+        <div className="flex items-center justify-start gap-3">
+          <motion.div 
+            className="p-3 rounded-xl flex-shrink-0"
+            style={{ backgroundColor: 'rgb(249, 249, 250)' }}
+            whileHover={{ rotate: 360, scale: 1.1 }}
+            transition={{ duration: 0.6, type: "spring" }}
           >
-            {label}
-          </motion.h2>
-          <motion.p 
-            className="text-sm text-gray-500"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: delay + 0.3 }}
-          >
-            {timeRemaining}
-          </motion.p>
+            {icon}
+          </motion.div>
+          <div className="text-left">
+            <motion.h2 
+              className=""
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: delay + 0.2 }}
+            >
+              <span className="text-gray-900 dark:text-gray-100 text-xl font-semibold">
+                {label}
+              </span>
+            </motion.h2>
+            <motion.p 
+              className="text-sm"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: delay + 0.3 }}
+            >
+              <span className="text-gray-600 dark:text-gray-500">
+                {timeRemaining}
+              </span>
+            </motion.p>
+          </div>
         </div>
       </div>
       
@@ -80,7 +88,7 @@ export function TimeProgress({ label, icon, percentage, timeRemaining, gradient,
         </motion.div>
       )}
       
-      <div className="relative h-8 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+      <div className="relative h-8 w-full max-w-full bg-gray-100 rounded-full overflow-hidden shadow-inner box-border">
         <motion.div
           className={`absolute top-0 left-0 h-full ${gradient} rounded-full relative overflow-hidden`}
           initial={{ width: 0 }}
@@ -134,13 +142,15 @@ export function TimeProgress({ label, icon, percentage, timeRemaining, gradient,
         
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.span 
-            className="text-xs font-medium text-gray-700 drop-shadow-sm"
+            className="text-xs font-medium drop-shadow-sm"
             key={percentage}
             initial={{ scale: 1.3, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            {percentage.toFixed(2)}%
+            <span className="text-white">
+              {percentage.toFixed(2)}%
+            </span>
           </motion.span>
         </div>
       </div>

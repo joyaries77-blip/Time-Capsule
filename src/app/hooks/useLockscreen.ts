@@ -1,69 +1,70 @@
 import { useState, useEffect } from 'react';
 
-export interface LockscreenState {
-  isSet: boolean;
-  imageUrl: string | null;
-}
-
-export function useLockscreen() {
-  const [lockscreenState, setLockscreenState] = useState<LockscreenState>({
-    isSet: false,
-    imageUrl: null,
-  });
+export function useLockScreen() {
+  const [isLockScreenEnabled, setIsLockScreenEnabled] = useState(false);
 
   useEffect(() => {
-    // 检查是否已设置锁屏桌面
-    const saved = localStorage.getItem('lockscreen-set');
-    const imageUrl = localStorage.getItem('lockscreen-image-url');
-    
-    if (saved === 'true' && imageUrl) {
-      setLockscreenState({
-        isSet: true,
-        imageUrl,
-      });
+    // 从本地存储读取设置
+    const saved = localStorage.getItem('lockScreenEnabled');
+    if (saved === 'true') {
+      setIsLockScreenEnabled(true);
+      enableLockScreen();
     }
   }, []);
 
-  const setLockscreen = async (imageDataUrl: string) => {
-    try {
-      // 保存到 localStorage
-      localStorage.setItem('lockscreen-set', 'true');
-      localStorage.setItem('lockscreen-image-url', imageDataUrl);
-      
-      setLockscreenState({
-        isSet: true,
-        imageUrl: imageDataUrl,
+  const enableLockScreen = () => {
+    // 请求全屏API（如果支持）
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {
+        // 全屏失败时忽略
       });
+    }
+    
+    // 阻止屏幕休眠（需要用户交互）
+    if ('wakeLock' in navigator) {
+      (navigator as any).wakeLock.request('screen').catch(() => {
+        // Wake Lock失败时忽略
+      });
+    }
+    
+    // 设置本地存储
+    localStorage.setItem('lockScreenEnabled', 'true');
+    setIsLockScreenEnabled(true);
+  };
 
-      // 尝试下载图片（用户可以在相册中设置为锁屏）
-      const link = document.createElement('a');
-      link.download = 'time-capsule-lockscreen.png';
-      link.href = imageDataUrl;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  const disableLockScreen = () => {
+    // 退出全屏
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {
+        // 退出全屏失败时忽略
+      });
+    }
+    
+    // 释放Wake Lock
+    if ('wakeLock' in navigator) {
+      (navigator as any).wakeLock.release().catch(() => {
+        // 释放失败时忽略
+      });
+    }
+    
+    // 清除本地存储
+    localStorage.setItem('lockScreenEnabled', 'false');
+    setIsLockScreenEnabled(false);
+  };
 
-      return true;
-    } catch (error) {
-      console.error('设置锁屏桌面失败:', error);
-      return false;
+  const toggleLockScreen = () => {
+    if (isLockScreenEnabled) {
+      disableLockScreen();
+    } else {
+      enableLockScreen();
     }
   };
 
-  const removeLockscreen = () => {
-    localStorage.removeItem('lockscreen-set');
-    localStorage.removeItem('lockscreen-image-url');
-    
-    setLockscreenState({
-      isSet: false,
-      imageUrl: null,
-    });
-  };
-
   return {
-    lockscreenState,
-    setLockscreen,
-    removeLockscreen,
+    isLockScreenEnabled,
+    enableLockScreen,
+    disableLockScreen,
+    toggleLockScreen,
   };
 }
 

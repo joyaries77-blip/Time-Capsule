@@ -1,3 +1,48 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+/* 禁用文本选择和复制 */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 禁用拖拽 */
+img, a {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+/* 禁用文本选择高亮 */
+::selection {
+  background: transparent;
+}
+
+::-moz-selection {
+  background: transparent;
+}
+
+/* 防止点击链接导致页面刷新 */
+a {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+a:active,
+a:focus {
+  outline: none;
+}
+
+/* 确保点击不会触发页面导航 */
+body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}

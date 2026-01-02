@@ -1,7 +1,19 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 
-export function RetroDigitalClock() {
+interface RetroDigitalClockProps {
+  clockColor?: string;
+}
+
+// 将十六进制颜色转换为带透明度的 rgba
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+export function RetroDigitalClock({ clockColor = '#553cee' }: RetroDigitalClockProps) {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -50,21 +62,24 @@ export function RetroDigitalClock() {
           key={hours}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="font-mono text-6xl font-bold text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] tracking-wider"
+          className="font-mono text-6xl font-bold tracking-wider"
           style={{
-            textShadow: '0 0 20px rgba(52, 211, 153, 0.8), 0 0 30px rgba(52, 211, 153, 0.6), 0 0 40px rgba(52, 211, 153, 0.4)',
+            textShadow: `0 0 20px ${hexToRgba(clockColor, 0.8)}, 0 0 30px ${hexToRgba(clockColor, 0.6)}, 0 0 40px ${hexToRgba(clockColor, 0.4)}`,
           }}
         >
-          {hours}
+          <span style={{ color: clockColor }}>
+            {hours}
+          </span>
         </motion.div>
         
         {/* Colon */}
         <motion.div
           animate={{ opacity: [1, 0.3, 1] }}
           transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-          className="font-mono text-6xl font-bold text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]"
+          className="font-mono text-6xl font-bold"
           style={{
-            textShadow: '0 0 20px rgba(52, 211, 153, 0.8)',
+            color: clockColor,
+            textShadow: `0 0 20px ${hexToRgba(clockColor, 0.8)}`,
           }}
         >
           :
@@ -75,21 +90,24 @@ export function RetroDigitalClock() {
           key={minutes}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="font-mono text-6xl font-bold text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] tracking-wider"
+          className="font-mono text-6xl font-bold tracking-wider"
           style={{
-            textShadow: '0 0 20px rgba(52, 211, 153, 0.8), 0 0 30px rgba(52, 211, 153, 0.6), 0 0 40px rgba(52, 211, 153, 0.4)',
+            textShadow: `0 0 20px ${hexToRgba(clockColor, 0.8)}, 0 0 30px ${hexToRgba(clockColor, 0.6)}, 0 0 40px ${hexToRgba(clockColor, 0.4)}`,
           }}
         >
-          {minutes}
+          <span style={{ color: clockColor }}>
+            {minutes}
+          </span>
         </motion.div>
         
         {/* Colon */}
         <motion.div
           animate={{ opacity: [1, 0.3, 1] }}
           transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
-          className="font-mono text-6xl font-bold text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)]"
+          className="font-mono text-6xl font-bold"
           style={{
-            textShadow: '0 0 20px rgba(52, 211, 153, 0.8)',
+            color: clockColor,
+            textShadow: `0 0 20px ${hexToRgba(clockColor, 0.8)}`,
           }}
         >
           :
@@ -100,26 +118,30 @@ export function RetroDigitalClock() {
           key={seconds}
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="font-mono text-6xl font-bold text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.8)] tracking-wider"
+          className="font-mono text-6xl font-bold tracking-wider"
           style={{
-            textShadow: '0 0 20px rgba(52, 211, 153, 0.8), 0 0 30px rgba(52, 211, 153, 0.6), 0 0 40px rgba(52, 211, 153, 0.4)',
+            textShadow: `0 0 20px ${hexToRgba(clockColor, 0.8)}, 0 0 30px ${hexToRgba(clockColor, 0.6)}, 0 0 40px ${hexToRgba(clockColor, 0.4)}`,
           }}
         >
-          {seconds}
+          <span style={{ color: clockColor }}>
+            {seconds}
+          </span>
         </motion.div>
       </div>
 
       {/* Date display */}
       <motion.div 
-        className="text-emerald-500/80 text-sm font-mono tracking-wide relative z-10"
+        className="text-sm font-mono tracking-wide relative z-10"
         style={{
-          textShadow: '0 0 10px rgba(52, 211, 153, 0.5)',
+          textShadow: `0 0 10px ${hexToRgba(clockColor, 0.5)}`,
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}
       >
-        {date}
+        <span style={{ color: hexToRgba(clockColor, 0.8) }}>
+          {date}
+        </span>
       </motion.div>
 
       {/* Corner decorations for retro look */}
