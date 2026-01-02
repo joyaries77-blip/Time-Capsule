@@ -1,0 +1,18 @@
+# 在云Mac终端中执行以下命令（按顺序复制粘贴）
+
+# 1. 进入主目录
+cd ~
+
+# 2. 克隆项目
+git clone https://github.com/joyaries77-blip/Time-Capsule.git
+
+# 3. 进入项目目录
+cd Time-Capsule
+
+# 4. 运行设置脚本
+chmod +x setup-on-cloud-mac.sh
+./setup-on-cloud-mac.sh
+
+# 5. 设置完成后，打开 Xcode 项目
+npx cap open ios
+
